@@ -1,0 +1,31 @@
+{
+  "name": "node-service",
+  "version": "1.0.0",
+  "description": "A simple Node.js script that uses the client credential OAuth2 flow to access Outlook data without requiring user logon.",
+  "main": "service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/jasonjoh/node-service.git"
+  },
+  "keywords": [
+    "outlook",
+    "app-only",
+    "client credentials",
+    "mail",
+    "api",
+    "rest"
+  ],
+  "author": "Jason Johnston <jasonjoh@microsoft.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jasonjoh/node-service/issues"
+  },
+  "homepage": "https://github.com/jasonjoh/node-service",
+  "dependencies": {
+    "adal-node": "^0.1.13",
+    "nconf": "^0.7.1"
+  }
+}
