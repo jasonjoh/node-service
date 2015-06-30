@@ -2,6 +2,16 @@
 
 **THIS IS A WORK IN PROGRESS**
 
+## Prerequisites ##
+
+The app has the following dependencies:
+
+- 
+[Windows Azure Active Directory Authentication Library (ADAL) for Node.js](https://github.com/AzureAD/azure-activedirectory-library-for-nodejs)
+- [nconf](https://github.com/indexzero/nconf)
+
+Run `npm install` to install dependencies.
+
 ## Register the app ##
 
 We'll start by [registering the app in Azure AD](https://github.com/jasonjoh/office365-azure-guides/blob/master/RegisterAnAppInAzure.md).
