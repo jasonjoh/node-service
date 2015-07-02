@@ -1,8 +1,10 @@
+/// <reference path="typings/node/node.d.ts"/>
 var config = 'service-config.json';
 
 var fs = require('fs');
 var nconf = require('nconf');
 var adal = require('adal-node');
+var outlook = require('node-outlook');
 
 var AuthenticationContext = adal.AuthenticationContext;
 
@@ -18,6 +20,97 @@ function turnOnLogging() {
         console.log(error);
       }
     }
+  });
+}
+
+// Function that gets a user's email
+function GetUserEmail(user, accessToken) {
+  
+  // Uncomment this to enable tracing to the console
+  //outlook.base.setTraceFunc(console.log);
+  outlook.base.setFiddlerEnabled(true);
+  
+  var getMessages = outlook.base.apiEndpoint() + '/Users/' + user + '/Messages';
+  
+  var queryParams = {
+    '$select': 'Subject,DateTimeReceived,From',
+    '$orderby': 'DateTimeReceived',
+    '$top': 5
+  };
+  
+  // Option 1: Use makeApiCall to implement a GET
+  // GET /Users/allieb@contoso.com/Messages?$select=Subject,DateTimeReceived,From&$orderby=DateTimeReceived&$top=5
+  outlook.base.makeApiCall({url: getMessages, token: accessToken, query: queryParams}, function(error, response) {
+    console.log('');
+    if (error) {
+      console.log('makeApiCall(GET) returned an error: ' + error);
+    }
+    if (response) {
+      console.log('makeApiCall(GET) returned a response: ' + response.statusCode);
+      console.log('Response body: ' + JSON.stringify(response.body, null, 2));
+    }
+    console.log('');
+  });
+  
+  // Option 2: Use the getMessages function to do a GET
+  outlook.mail.getMessages({token: accessToken, user: user, odataParams: queryParams}, function(error, response) {
+    console.log('');
+    if (error) {
+      console.log('getMessages returned an error: ' + error);
+    }
+    if (response) {
+      console.log('getMessages returned ' + response.value.length + ' messages.');
+      response.value.forEach(function(message) {
+        console.log('  Subject: ' + message.Subject);
+      });
+    }
+    console.log('');
+  });
+}
+
+function CreateUserEmail(user, accessToken) {
+  var newMsg = {
+    'Subject': "Created by Node Service app",
+    'Importance': 'Low',
+    'Body': {
+      'ContentType': 'Text',
+      'Content': 'This is an automated email created by the Node service.'
+    },
+    'ToRecipients': [
+      {
+        'EmailAddress': {
+          'Address': 'test@example.com'
+        }
+      }
+    ]
+  };
+  
+  var putMessage = outlook.base.apiEndpoint() + '/Users/' + user + '/folders/drafts/messages';
+  
+  // POST /Users/allieb@contoso.com/folders/drafts/messages
+  outlook.base.makeApiCall({url: putMessage, token: accessToken, method: 'POST', payload: newMsg}, function(error, response) {
+    console.log('');
+    if (error) {
+      console.log('makeApiCall(POST) returned an error: ' + error);
+    }
+    if (response) {
+      console.log('makeApiCall(POST) returned a response:' + response.statusCode);
+      console.log('Response body: ' + JSON.stringify(response.body, null, 2));
+    }
+    console.log('');
+  });
+}
+
+// Function that loops through users and gets their email
+function GetUserEmails(accessToken) {
+  var users = nconf.get('users');
+  if (users === undefined || users.length <= 0) {
+    console.log('No users specified. Please add users to the user value in service-config.json.');
+  }
+  
+  users.forEach(function(user) {
+    console.log('Getting mail for ' + user);
+    GetUserEmail(user, accessToken);
   });
 }
 
@@ -54,11 +147,12 @@ console.log('  Client ID: ' + client_id);
 console.log('  Certificate file: ' + cert_file);
 console.log('  Certificate thumbprint: ' + thumbprint);
 console.log('  Tenant: ' + tenant);
+console.log('');
 
 // Get the token
 
-// Turn on ADAL logging
-turnOnLogging();
+// Uncomment this to turn on ADAL logging
+//turnOnLogging();
 
 var authorityUrl = 'https://login.microsoftonline.com/' + tenant;
 var resource = 'https://outlook.office365.com';
@@ -70,6 +164,6 @@ context.acquireTokenWithClientCertificate(resource, client_id, private_key, thum
   if (error) {
     console.log('ERROR acquiring token: ' + error.stack);
   } else {
-    console.log('TOKEN: ' + JSON.stringify(tokenResponse));
+    GetUserEmails(tokenResponse.accessToken);
   }
 });

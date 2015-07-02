@@ -47,3 +47,5 @@ node_modules
 *.cer
 certificates/keyCredentials.txt
 certificates/*.json
+typings
+.settings

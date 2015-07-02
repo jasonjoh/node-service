@@ -88,7 +88,11 @@ Open the `service-config.json` file and fill in the values as follows:
 	  "client_id": "5f920d85-823a-4291-87bf-55ce1629186c",
 	  "cert_file": "./certificates/private-key-rsa.pem",
 	  "cert_thumbprint": "8745398DEA4982B394A13CAC39031FF394EE24F8",
-	  "tenant": "contoso.onmicrosoft.com"
+	  "tenant": "contoso.onmicrosoft.com",
+	  "users: [
+		"allieb@contoso.onmicrosoft.com",
+		"alexd@contoso.onmicrosoft.com"
+	  ]
 	}
 
 Save your changes.

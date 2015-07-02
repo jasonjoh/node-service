@@ -2,5 +2,8 @@
   "client_id": "",
   "cert_file": "",
   "cert_thumbprint": "",
-  "tenant": ""
+  "tenant": "",
+  "users": [
+    
+  ]
 }
