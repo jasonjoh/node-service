@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/jasonjoh/node-service",
   "dependencies": {
-    "adal-node": "^0.1.13",
-    "nconf": "^0.7.1",
-    "node-outlook": "^2.0.0"
+    "adal-node": "^0.1.18",
+    "nconf": "^0.8.4",
+    "node-outlook": "^1.1.5"
   }
 }

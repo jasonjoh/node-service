@@ -27,8 +27,8 @@ function turnOnLogging() {
 function GetUserEmail(user, accessToken) {
   
   // Uncomment this to enable tracing to the console
-  //outlook.base.setTraceFunc(console.log);
-  outlook.base.setFiddlerEnabled(true);
+  outlook.base.setTraceFunc(console.log);
+  //outlook.base.setFiddlerEnabled(true);
   
   var getMessages = outlook.base.apiEndpoint() + '/Users/' + user + '/Messages';
   
@@ -53,7 +53,8 @@ function GetUserEmail(user, accessToken) {
   });
   
   // Option 2: Use the getMessages function to do a GET
-  outlook.mail.getMessages({token: accessToken, user: user, odataParams: queryParams}, function(error, response) {
+  
+  outlook.mail.getMessages({token: accessToken, user: {email: user} , odataParams: queryParams}, function(error, response) {
     console.log('');
     if (error) {
       console.log('getMessages returned an error: ' + error);

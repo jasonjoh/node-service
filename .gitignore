@@ -49,3 +49,4 @@ certificates/keyCredentials.txt
 certificates/*.json
 typings
 .settings
+.vscode/launch.json
