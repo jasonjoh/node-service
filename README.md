@@ -33,6 +33,14 @@ The Outlook APIs require the use of a certificate to acquire tokens when using t
 
 Visual Studio 2013 includes a command line tool called [makecert.exe](https://msdn.microsoft.com/en-us/library/bfsktky3(v=vs.110).aspx) which we'll use to make the certificate.
 
+> **NOTE**: As an alternative to using `makecert`, you can use the `New-SelfSignedCertificate` cmdlet in Windows Powershell. To do that, enter the following command in Powershell:
+>
+> ``` Shell
+> New-SelfSignedCertificate -DnsName "MyCompanyName MyAppName Cert" -CertStoreLocation "Cert:\CurrentUser\My"
+> ```
+>
+> Then skip to step 3 below.
+
 The requirements for the certificate are that the private key is marked as exportable and the key length is a **minimum** of 2048 bits. We will create both a public key file (base-64 encoded CER file) and a private key file (PKCS #12 PFX file).
 
 1. Open your **Developer Command Prompt for VS2013**. If you can't find this, look in `%programfiles(x86)%\Microsoft Visual Studio 12.0\Common7\Tools\Shortcuts`.
